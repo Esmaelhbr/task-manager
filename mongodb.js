@@ -17,7 +17,27 @@ MongoClient.connect(connectionUrl, {useNewUrlParser: true},
 	if (error){
 		return console.log("Unable to connect to database");
 	}
+
 	const db = client.db(databaseName);
+
+
+
+//delete
+	// db.collection('users').deleteMany({
+	// 	age: 13
+	// }).then((result) => {
+	// 	console.log(result)
+	// }).catch((error) => {
+	// 	console.log(error)
+	// });
+
+	db.collection('tasks').deleteOne({
+		description: "play soccer"
+	}).then((result) => {
+		console.log("result")
+	}).catch((error) => {
+		console.log(error)
+	})
 
 
 
@@ -37,18 +57,18 @@ MongoClient.connect(connectionUrl, {useNewUrlParser: true},
 	// })
 
 
-	db.collection('tasks').updateMany({
-		status: false
-	},{
-		$set : {
-			status: true
-		}
+	// db.collection('tasks').updateMany({
+	// 	status: false
+	// },{
+	// 	$set : {
+	// 		status: true
+	// 	}
 		
-	}).then((result) => {
-		console.log(result)
-	}).catch((error) => {
-		console.log(error)
-	})
+	// }).then((result) => {
+	// 	console.log(result)
+	// }).catch((error) => {
+	// 	console.log(error)
+	// })
 
 
 
