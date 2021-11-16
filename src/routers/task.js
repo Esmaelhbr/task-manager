@@ -17,14 +17,7 @@ router.get('/tasks/:id', async (req,res) => {
 		res.status(500).send()
 	}
 
-	// Task.findById(_id).then((task) =>{
-	// 	if(!task){
-	// 		return res.status(404).send()
-	// 	}
-	// 	res.send(task)
-	// }).catch((e) =>{
-	// 	res.status(500).send();
-	// })
+	
 })
 
 
@@ -41,11 +34,7 @@ router.get('/tasks', async (req, res) => {
 
 	}
 
-	// Task.find({}).then((tasks) => {
-	// 	res.send(tasks);
-	// }).catch((e) => {
-	// 	res.status(500).send()
-	// }) 
+	
 })
 
 router.post('/tasks',async (req,res)=> {
@@ -57,12 +46,7 @@ router.post('/tasks',async (req,res)=> {
     	res.status(400).send(e)
 
     }
-	// task.save().then(() => {
-	// 	res.status(201).send(task)
-
-	// }).catch((e) =>{
-	// 	res.status(400).send(e)
-	// })
+	
 })
 
 router.patch('/tasks/:id', async (req,res) => { 
@@ -75,8 +59,16 @@ router.patch('/tasks/:id', async (req,res) => {
 	}
 
 	try{
-		const task = await Task.findByIdAndUpdate(req.params.id, req.body,{new : true,
-			runValidators : true})
+		// const task = await Task.findByIdAndUpdate(req.params.id, req.body,{new : true,
+		// 	runValidators : true})
+		const task = await Task.findById(req.params.id)
+		updates.forEach((update) => {
+			task[update] = req.body[update]
+
+		  // Todo...
+
+		})
+		await task.save();
 
 		if(!task){
 			return res.status(404).send()
