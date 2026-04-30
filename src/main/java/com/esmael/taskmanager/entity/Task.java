@@ -8,6 +8,8 @@ import jakarta.persistence.Id;
 import jakarta.persistence.JoinColumn;
 import jakarta.persistence.ManyToOne;
 import jakarta.persistence.Table;
+import jakarta.validation.constraints.NotBlank;
+import jakarta.validation.constraints.Size;
 
 @Entity
 @Table(name = "tasks")
@@ -18,9 +20,13 @@ public class Task {
 	@Column(name = "id")
 	private Long id;
 	
+	@NotBlank(message = "Title is required")
+	@Size(max = 100, message ="Title cannot exceed 100 characters")
 	@Column(name = "title")
 	private String title;
+	
 	@Column(name = "description")
+	@Size(max = 500, message = "Description too long")
 	private String description;
 	@Column(name = "status")
 	private boolean completed = false;

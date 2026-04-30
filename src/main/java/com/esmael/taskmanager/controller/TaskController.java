@@ -15,6 +15,8 @@ import org.springframework.web.bind.annotation.RestController;
 import com.esmael.taskmanager.entity.Task;
 import com.esmael.taskmanager.service.TaskService;
 
+import jakarta.validation.Valid;
+
 
 @RestController
 @RequestMapping("/tasks")
@@ -27,7 +29,7 @@ public class TaskController {
 		
 	}
 	@PostMapping
-	public Task createTask(@RequestBody Task task) {
+	public Task createTask(@Valid @RequestBody Task task) {
 		return taskService.createTask(task);
 	}
 	
@@ -44,7 +46,7 @@ public class TaskController {
 	}
 	
 	@PutMapping("/{id}")
-	public ResponseEntity<Task> updateTask(@PathVariable Long id, @RequestBody Task task){
+	public ResponseEntity<Task> updateTask(@Valid @PathVariable Long id, @RequestBody Task task){
 		try {
 			return ResponseEntity.ok(taskService.updateTask(id, task));
 			
