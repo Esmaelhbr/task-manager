@@ -6,6 +6,7 @@ import java.util.Optional;
 import org.springframework.stereotype.Service;
 
 import com.esmael.taskmanager.entity.Task;
+import com.esmael.taskmanager.exception.ResourceNotFoundException;
 import com.esmael.taskmanager.repository.TaskRepository;
 
 @Service
@@ -30,17 +31,14 @@ public class TaskService {
 	}
 	
 	public Task updateTask(Long id, Task updatedTask) {
-		return taskRepository.findById(id).map(task ->{
-			
-			task.setTitle(updatedTask.getTitle());
-            task.setDescription(updatedTask.getDescription());
-            task.setCompleted(updatedTask.isCompleted());
-           
-            return taskRepository.save(task);
-			
-			
-				
-		}).orElseThrow(() -> new RuntimeException("Task not found"));
+		 Task task = taskRepository.findById(id)
+		            .orElseThrow(() -> new ResourceNotFoundException("Task not found"));
+
+		    task.setTitle(updatedTask.getTitle());
+		    task.setDescription(updatedTask.getDescription());
+		    task.setCompleted(updatedTask.isCompleted());
+
+		    return taskRepository.save(task);
 	}
 	
 	public void deleteTask(Long id) {
