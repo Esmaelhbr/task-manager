@@ -26,8 +26,9 @@ public class TaskService {
 		return taskRepository.findAll();
 	}
 	
-	public Optional<Task> getTaskById(Long id){
-		return taskRepository.findById(id);
+	public Task getTaskById(Long id){
+		return taskRepository.findById(id)
+	            .orElseThrow(() -> new ResourceNotFoundException("Task not found with id: " + id));
 	}
 	
 	public Task updateTask(Long id, Task updatedTask) {
@@ -42,7 +43,10 @@ public class TaskService {
 	}
 	
 	public void deleteTask(Long id) {
-		taskRepository.deleteById(id);
+		  Task task = taskRepository.findById(id)
+		            .orElseThrow(() -> new ResourceNotFoundException("Task not found with id: " + id));
+
+		    taskRepository.delete(task);
 	}
 
 	
