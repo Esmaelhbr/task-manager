@@ -12,6 +12,7 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
+import com.esmael.taskmanager.dto.ApiResponse;
 import com.esmael.taskmanager.entity.Task;
 import com.esmael.taskmanager.service.TaskService;
 
@@ -29,19 +30,30 @@ public class TaskController {
 		
 	}
 	@PostMapping
-	public ResponseEntity<Task> createTask(@Valid @RequestBody Task task) {
+	public ResponseEntity<ApiResponse<Task>> createTask(@Valid @RequestBody Task task) {
 		 Task created = taskService.createTask(task);
-		 return ResponseEntity.status(201).body(created);
+		 
+		 ApiResponse<Task> response = new ApiResponse<Task>(true, "Task created successfully", created);
+		 return ResponseEntity.status(201).body(response);
 	}
 	
 	@GetMapping
-	public List<Task> getAllTasks(){
-		return taskService.getAllTasks();
+	public ResponseEntity<ApiResponse<List<Task>>> getAllTasks(){
+		
+		List<Task> tasks = taskService.getAllTasks();
+		
+		ApiResponse<List<Task>> response = 
+				new ApiResponse<List<Task>>(true, "Tasks retreived successfully", tasks);
+		return ResponseEntity.ok(response);
 	}
 	
 	@GetMapping("/{id}")
-	public ResponseEntity<Task> getTaskById(@PathVariable Long id) {
-	    return ResponseEntity.ok(taskService.getTaskById(id));
+	public ResponseEntity<ApiResponse<Task>> getTaskById(@PathVariable Long id) {
+	    Task task = taskService.getTaskById(id);
+	    
+	    ApiResponse<Task> response = new ApiResponse<Task>(true, "Task retrieved successfully", task);
+		
+	    return ResponseEntity.ok(response);
 	}
 
 

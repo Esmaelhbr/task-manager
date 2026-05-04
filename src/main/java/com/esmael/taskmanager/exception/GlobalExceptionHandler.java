@@ -9,16 +9,16 @@ import org.springframework.web.bind.MethodArgumentNotValidException;
 import org.springframework.web.bind.annotation.ControllerAdvice;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 
+import com.esmael.taskmanager.dto.ApiResponse;
+
 @ControllerAdvice
 public class GlobalExceptionHandler {
 	 
     @ExceptionHandler(ResourceNotFoundException.class)
-    public ResponseEntity<Map<String, Object>> handleNotFound(ResourceNotFoundException ex) {
+    public ResponseEntity<ApiResponse<Object>> handleNotFound(ResourceNotFoundException ex) {
 
-        Map<String, Object> response = new HashMap<>();
-        response.put("message", ex.getMessage());
-        response.put("status", 404);
-
+       ApiResponse<Object> response = new ApiResponse<>(false, ex.getMessage(), null);
+        
         return new ResponseEntity<>(response, HttpStatus.NOT_FOUND);
     }
     
