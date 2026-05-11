@@ -5,19 +5,25 @@ import java.util.List;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
+import com.esmael.taskmanager.entity.Role;
 import com.esmael.taskmanager.entity.User;
 import com.esmael.taskmanager.exception.ResourceNotFoundException;
+import com.esmael.taskmanager.repository.RoleRepository;
 import com.esmael.taskmanager.repository.UserRepository;
 
 @Service
 public class UserService {
 
 	private final UserRepository userRepository;
+	
 //	private final PasswordEncoder passwordEncoder;
 	
-	public UserService(UserRepository userRepository) {
+	private final RoleRepository roleRepository;
+	
+	public UserService(UserRepository userRepository, RoleRepository roleRepository) {
 		this.userRepository = userRepository;
 //		this.passwordEncoder = passwordEncoder;
+		this.roleRepository = roleRepository;
 		
 		//  , PasswordEncoder passwordEncoder   
 	}
@@ -26,6 +32,10 @@ public class UserService {
 		
 //		String encodedPassword = passwordEncoder.encode(user.getPassword());
 //		user.setPassword(encodedPassword);
+		
+	    Role userRole = roleRepository.findByName("ROLE_USER")
+	            .orElseThrow(() -> new RuntimeException("Role not found"));
+	    user.getRoles().add(userRole);
 		return userRepository.save(user);
 	}
 	
