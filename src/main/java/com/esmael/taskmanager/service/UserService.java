@@ -16,13 +16,13 @@ public class UserService {
 
 	private final UserRepository userRepository;
 	
-//	private final PasswordEncoder passwordEncoder;
+	private final PasswordEncoder passwordEncoder;
 	
 	private final RoleRepository roleRepository;
 	
-	public UserService(UserRepository userRepository, RoleRepository roleRepository) {
+	public UserService(UserRepository userRepository, RoleRepository roleRepository, PasswordEncoder passwordEncoder) {
 		this.userRepository = userRepository;
-//		this.passwordEncoder = passwordEncoder;
+		this.passwordEncoder = passwordEncoder;
 		this.roleRepository = roleRepository;
 		
 		//  , PasswordEncoder passwordEncoder   
@@ -30,8 +30,8 @@ public class UserService {
 	
 	public User createUser(User user) {
 		
-//		String encodedPassword = passwordEncoder.encode(user.getPassword());
-//		user.setPassword(encodedPassword);
+		String encodedPassword = passwordEncoder.encode(user.getPassword());
+		user.setPassword(encodedPassword);
 		
 	    Role userRole = roleRepository.findByName("ROLE_USER")
 	            .orElseThrow(() -> new RuntimeException("Role not found"));
