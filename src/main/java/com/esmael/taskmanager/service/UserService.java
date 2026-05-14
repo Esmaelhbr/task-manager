@@ -5,6 +5,8 @@ import java.util.List;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
+import com.esmael.taskmanager.dto.UserRequestDto;
+import com.esmael.taskmanager.dto.UserResponseDto;
 import com.esmael.taskmanager.entity.Role;
 import com.esmael.taskmanager.entity.User;
 import com.esmael.taskmanager.exception.ResourceNotFoundException;
@@ -28,16 +30,23 @@ public class UserService {
 		//  , PasswordEncoder passwordEncoder   
 	}
 	
-	public User createUser(User user) {
+	public UserResponseDto createUser(UserRequestDto request) {
 		
-		String encodedPassword = passwordEncoder.encode(user.getPassword());
-		user.setPassword(encodedPassword);
+		User user = new User();
 		
-	    Role userRole = roleRepository.findByName("ROLE_USER")
-	            .orElseThrow(() -> new RuntimeException("Role not found"));
-	    user.getRoles().add(userRole);
-		return userRepository.save(user);
-	}
+		user.setName(request.getName());
+		user.setEmail(request.getEmail());
+		
+		user.setPassword(passwordEncoder.encode(user.getPassword()));
+		
+		User saved = userRepository.save(user);
+		
+		
+		
+		
+	    
+		return  new UserResponseDto(saved.getId(),saved.getName(),saved.getEmail());
+	}	
 	
 	public List<User> getAllUsers(){
 		return userRepository.findAll();

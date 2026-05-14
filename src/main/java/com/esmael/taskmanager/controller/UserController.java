@@ -12,6 +12,8 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.esmael.taskmanager.dto.ApiResponse;
+import com.esmael.taskmanager.dto.UserRequestDto;
+import com.esmael.taskmanager.dto.UserResponseDto;
 import com.esmael.taskmanager.entity.User;
 import com.esmael.taskmanager.service.UserService;
 
@@ -27,13 +29,17 @@ public class UserController {
 	}
 	
 	@PostMapping
-	public ResponseEntity<ApiResponse<User>> createUser(@RequestBody User user){
-		User created = userService.createUser(user);
+	public ResponseEntity<ApiResponse<UserResponseDto>> createUser(@RequestBody UserRequestDto request){
+		UserResponseDto created = userService.createUser(request);
 		
-		ApiResponse<User> response = 
-				new ApiResponse<User>(true, "User created successfully ", created);
-		
-		return ResponseEntity.status(201).body(response);
+		 ApiResponse<UserResponseDto> response =
+		            new ApiResponse<>(
+		                    true,
+		                    "User created successfully",
+		                    created
+		            );
+
+		  return ResponseEntity.status(201).body(response);
 	}
 	
 	@GetMapping
