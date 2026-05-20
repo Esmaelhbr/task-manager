@@ -1,9 +1,15 @@
 package com.esmael.taskmanager.service;
 
-import java.util.List;
-import java.util.Optional;
 
+import java.util.List;
+
+
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
+import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
+
 
 import com.esmael.taskmanager.entity.Task;
 import com.esmael.taskmanager.exception.ResourceNotFoundException;
@@ -48,6 +54,29 @@ public class TaskService {
 
 		    taskRepository.delete(task);
 	}
+	
+	//pagination 
+	public Page<Task> getTasks(
+	    
+		int page,
+	    int size,
+	    String sortBy) {
+
+	    Pageable pageable = PageRequest.of(page, size, Sort.by(sortBy));
+
+	    return taskRepository.findAll(pageable);
+	}
+	
+	public Page<Task> searchTasks(String keyword, int page, int size){
+		
+		Pageable pageable = PageRequest.of(page, size);
+		
+		return taskRepository.findByTitleContainingIgnoreCase(keyword, pageable);
+		
+	}
+	
+	
+	
 
 	
 	

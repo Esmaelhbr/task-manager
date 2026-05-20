@@ -2,6 +2,7 @@ package com.esmael.taskmanager.controller;
 
 import java.util.List;
 
+import org.springframework.data.domain.Page;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -10,6 +11,7 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.esmael.taskmanager.dto.ApiResponse;
@@ -38,14 +40,21 @@ public class TaskController {
 	}
 	
 	@GetMapping
-	public ResponseEntity<ApiResponse<List<Task>>> getAllTasks(){
-		
-		List<Task> tasks = taskService.getAllTasks();
-		
-		ApiResponse<List<Task>> response = 
-				new ApiResponse<List<Task>>(true, "Tasks retreived successfully", tasks);
-		return ResponseEntity.ok(response);
+	public ResponseEntity<Page<Task>> getTasks(@RequestParam(defaultValue = "0")
+	        int page,@RequestParam(defaultValue = "5") int size, 
+	        @RequestParam(defaultValue = "id")
+	        String sortBy) {
+
+	    return ResponseEntity.ok(
+	            taskService.getTasks(
+	                    page,
+	                    size,
+	                    sortBy
+	            )
+	    );
 	}
+	
+
 	
 	@GetMapping("/{id}")
 	public ResponseEntity<ApiResponse<Task>> getTaskById(@PathVariable Long id) {
@@ -73,6 +82,16 @@ public class TaskController {
 	public ResponseEntity<Void> deleteTask(@PathVariable Long id){
 		taskService.deleteTask(id);
 		return ResponseEntity.noContent().build();
+	}
+	
+	//pagination
+	@GetMapping("/search")
+	public ResponseEntity<Page<Task>> searchTasks(@RequestParam String keyword,
+			@RequestParam(defaultValue = "0") int page,@RequestParam(defaultValue = "5") int size){
+		
+		return ResponseEntity.ok(taskService.searchTasks(keyword, page, size));
+		
+		
 	}
 
 }
