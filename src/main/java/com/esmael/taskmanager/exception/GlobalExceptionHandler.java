@@ -43,6 +43,7 @@ public class GlobalExceptionHandler {
     @ExceptionHandler(Exception.class)
     public ResponseEntity<Map<String, Object>> handleGeneric(Exception ex) {
 
+    	ex.printStackTrace();
         Map<String, Object> response = new HashMap<>();
         response.put("message", "Something went wrong");
         response.put("status", 500);

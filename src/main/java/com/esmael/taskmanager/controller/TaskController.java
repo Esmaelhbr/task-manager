@@ -1,6 +1,6 @@
 package com.esmael.taskmanager.controller;
 
-import java.util.List;
+
 
 import org.springframework.data.domain.Page;
 import org.springframework.http.ResponseEntity;
@@ -18,6 +18,7 @@ import com.esmael.taskmanager.dto.ApiResponse;
 import com.esmael.taskmanager.entity.Task;
 import com.esmael.taskmanager.service.TaskService;
 
+import io.swagger.v3.oas.annotations.Operation;
 import jakarta.validation.Valid;
 
 
@@ -31,6 +32,7 @@ public class TaskController {
 		this.taskService = taskService;
 		
 	}
+	@Operation(summary = "Create task")
 	@PostMapping
 	public ResponseEntity<ApiResponse<Task>> createTask(@Valid @RequestBody Task task) {
 		 Task created = taskService.createTask(task);
@@ -39,6 +41,7 @@ public class TaskController {
 		 return ResponseEntity.status(201).body(response);
 	}
 	
+	@Operation(summary = "Get All tasks")
 	@GetMapping
 	public ResponseEntity<Page<Task>> getTasks(@RequestParam(defaultValue = "0")
 	        int page,@RequestParam(defaultValue = "5") int size, 
@@ -55,7 +58,7 @@ public class TaskController {
 	}
 	
 
-	
+	@Operation(summary = "Get single task")
 	@GetMapping("/{id}")
 	public ResponseEntity<ApiResponse<Task>> getTaskById(@PathVariable Long id) {
 	    Task task = taskService.getTaskById(id);
@@ -66,7 +69,7 @@ public class TaskController {
 	}
 
 
-	
+	@Operation(summary = "Update task")
 	@PutMapping("/{id}")
 	public ResponseEntity<Task> updateTask(@Valid @PathVariable Long id, @RequestBody Task task){
 		try {
@@ -77,7 +80,7 @@ public class TaskController {
 		}
 		
 	}
-	
+	@Operation(summary = "Delete task")
 	@DeleteMapping("/{id}")
 	public ResponseEntity<Void> deleteTask(@PathVariable Long id){
 		taskService.deleteTask(id);
@@ -85,6 +88,7 @@ public class TaskController {
 	}
 	
 	//pagination
+	@Operation(summary = "Search task by keyword")
 	@GetMapping("/search")
 	public ResponseEntity<Page<Task>> searchTasks(@RequestParam String keyword,
 			@RequestParam(defaultValue = "0") int page,@RequestParam(defaultValue = "5") int size){

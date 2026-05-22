@@ -17,6 +17,8 @@ import com.esmael.taskmanager.dto.UserResponseDto;
 import com.esmael.taskmanager.entity.User;
 import com.esmael.taskmanager.service.UserService;
 
+import io.swagger.v3.oas.annotations.Operation;
+
 @RestController
 @RequestMapping("/users")
 public class UserController {
@@ -28,6 +30,7 @@ public class UserController {
 		this.userService = userService;
 	}
 	
+	@Operation(summary = "Create a user")
 	@PostMapping
 	public ResponseEntity<ApiResponse<UserResponseDto>> createUser(@RequestBody UserRequestDto request){
 		UserResponseDto created = userService.createUser(request);
@@ -41,7 +44,7 @@ public class UserController {
 
 		  return ResponseEntity.status(201).body(response);
 	}
-	
+	@Operation(summary = "Get All users")
 	@GetMapping
 	public ResponseEntity<ApiResponse<List<User>>> getAllUsers() {
 
@@ -52,7 +55,7 @@ public class UserController {
 
 	     return ResponseEntity.ok(response);
 	 }
-	
+	 @Operation(summary = "Get a single user")
 	 @GetMapping("/{id}")
 	 public ResponseEntity<ApiResponse<User>> getUserById(@PathVariable Long id) {
 
@@ -65,6 +68,7 @@ public class UserController {
 	    }
 
 	    // Delete user
+	  @Operation(summary = "Delete a user")
 	  @DeleteMapping("/{id}")
 	  public ResponseEntity<ApiResponse<Object>> deleteUser(@PathVariable Long id) {
 
