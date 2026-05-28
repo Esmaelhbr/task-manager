@@ -30,8 +30,9 @@ services:
 
     environment:
       SPRING_DATASOURCE_URL: jdbc:mysql://mysql:3306/taskdb?allowPublicKeyRetrieval=true&useSSL=false
-      SPRING_DATASOURCE_USERNAME: root
-      SPRING_DATASOURCE_PASSWORD: root
+      DB_USERNAME: ${DB_USERNAME}
+      DB_PASSWORD: ${DB_PASSWORD}
+      JWT_SECRET: ${JWT_SECRET}
 
 volumes:
   mysql-data:

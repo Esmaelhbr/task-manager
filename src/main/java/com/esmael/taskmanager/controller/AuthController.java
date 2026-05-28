@@ -29,12 +29,23 @@ public class AuthController {
 	    public AuthResponse login(
 	            @RequestBody AuthRequest request) {
 
-	        authenticationManager.authenticate(
-	                new UsernamePasswordAuthenticationToken(
-	                        request.getEmail(),
-	                        request.getPassword()
-	                )
-	        );
+	        try {
+
+	            authenticationManager.authenticate(
+	                    new UsernamePasswordAuthenticationToken(
+	                            request.getEmail(),
+	                            request.getPassword()
+	                    )
+	            );
+
+	        } catch (Exception e) {
+
+	            e.printStackTrace();
+
+	            throw new RuntimeException(
+	                    "Invalid email or password"
+	            );
+	        }
 
 	        String token =
 	                jwtUtil.generateToken(request.getEmail());

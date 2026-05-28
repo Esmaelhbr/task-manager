@@ -44,7 +44,7 @@ Thumbs.db
 application.properties
 application.yml
 
-
+.env
 
 #  Node 
 node_modules/
