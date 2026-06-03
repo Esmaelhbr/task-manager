@@ -2,6 +2,8 @@ package com.esmael.taskmanager.controller;
 
 
 
+import java.util.List;
+
 import org.springframework.data.domain.Page;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.DeleteMapping;
@@ -33,12 +35,19 @@ public class TaskController {
 		
 	}
 	@Operation(summary = "Create task")
-	@PostMapping
-	public ResponseEntity<ApiResponse<Task>> createTask(@Valid @RequestBody Task task) {
-		 Task created = taskService.createTask(task);
+	@PostMapping("/users/{userId}")
+	public ResponseEntity<ApiResponse<Task>> createTask(@PathVariable Long userId,@Valid @RequestBody Task task) {
+		 Task created = taskService.createTask(userId, task);
 		 
 		 ApiResponse<Task> response = new ApiResponse<Task>(true, "Task created successfully", created);
 		 return ResponseEntity.status(201).body(response);
+	}
+	@GetMapping("/user/{userId}")
+	public ResponseEntity<ApiResponse<List<Task>>> getTaskByUser(@PathVariable Long userId){
+		List<Task> tasks = taskService.getTasksByuser(userId);
+		
+		ApiResponse<List<Task>> response = new ApiResponse<List<Task>>(true,"Use tasks retrieved", tasks);
+		return ResponseEntity.ok(response);
 	}
 	
 	@Operation(summary = "Get All tasks")

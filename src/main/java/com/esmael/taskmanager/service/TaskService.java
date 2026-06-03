@@ -12,19 +12,26 @@ import org.springframework.stereotype.Service;
 
 
 import com.esmael.taskmanager.entity.Task;
+import com.esmael.taskmanager.entity.User;
 import com.esmael.taskmanager.exception.ResourceNotFoundException;
 import com.esmael.taskmanager.repository.TaskRepository;
+import com.esmael.taskmanager.repository.UserRepository;
 
 @Service
 public class TaskService {
 	
 	private final TaskRepository taskRepository;
+	private final UserRepository userRepository;
 	
-	public TaskService(TaskRepository taskRepository) {
+	public TaskService(UserRepository userRepository, TaskRepository taskRepository) {
 		this.taskRepository = taskRepository;
+		this.userRepository = userRepository;
 	}
 	
-	public Task createTask(Task task) {
+	public Task createTask(Long userId, Task task) {
+		User user = userRepository.findById(userId)
+				.orElseThrow(() -> new ResourceNotFoundException("User not found with id: "+ userId));;
+		task.setUser(user);
 		return taskRepository.save(task);
 	}
 	
@@ -53,6 +60,14 @@ public class TaskService {
 		            .orElseThrow(() -> new ResourceNotFoundException("Task not found with id: " + id));
 
 		    taskRepository.delete(task);
+	}
+	
+	
+	public List<Task> getTasksByuser(Long userId){
+		if(!userRepository.existsById(userId)) {
+			throw new ResourceNotFoundException("User not found with id: " + userId);
+		}
+		return taskRepository.findByUserId(userId);
 	}
 	
 	//pagination 
