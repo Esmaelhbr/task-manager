@@ -2,20 +2,18 @@ version: '3.8'
 
 services:
 
-  mysql:
-    image: mysql:8.0
+  postgres:
+    image: postgres:16
 
-    container_name: taskmanager-mysql
+    container_name: taskmanager-postgres
 
     environment:
-      MYSQL_ROOT_PASSWORD: root
-      MYSQL_DATABASE: taskdb
+      POSTGRES_DB: taskdb
+      POSTGRES_USER: postgres
+      POSTGRES_PASSWORD: postgres
 
     ports:
-      - "3307:3306"
-
-    volumes:
-      - mysql-data:/var/lib/mysql
+      - "5432:5432"
 
   app:
     build: .
@@ -26,13 +24,10 @@ services:
       - "8080:8080"
 
     depends_on:
-      - mysql
+      - postgres
 
     environment:
-      SPRING_DATASOURCE_URL: jdbc:mysql://mysql:3306/taskdb?allowPublicKeyRetrieval=true&useSSL=false
-      DB_USERNAME: ${DB_USERNAME}
-      DB_PASSWORD: ${DB_PASSWORD}
+      SPRING_DATASOURCE_URL: jdbc:postgresql://postgres:5432/taskdb
+      DB_USERNAME: postgres
+      DB_PASSWORD: postgres
       JWT_SECRET: ${JWT_SECRET}
-
-volumes:
-  mysql-data:
