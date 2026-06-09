@@ -34,7 +34,7 @@ public class UserService {
 		
 		User user = new User();
 		
-		user.setName(request.getName());
+		user.setUsername(request.getName());
 		user.setEmail(request.getEmail());
 		
 		user.setPassword(passwordEncoder.encode(user.getPassword()));
@@ -45,7 +45,7 @@ public class UserService {
 		
 		
 	    
-		return  new UserResponseDto(saved.getId(),saved.getName(),saved.getEmail());
+		return  new UserResponseDto(saved.getId(),saved.getUsername(),saved.getEmail());
 	}	
 	
 	public List<User> getAllUsers(){
