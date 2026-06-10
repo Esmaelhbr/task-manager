@@ -2,19 +2,6 @@ version: '3.8'
 
 services:
 
-  postgres:
-    image: postgres:16
-
-    container_name: taskmanager-postgres
-
-    environment:
-      POSTGRES_DB: taskdb
-      POSTGRES_USER: postgres
-      POSTGRES_PASSWORD: postgres
-
-    ports:
-      - "5432:5432"
-
   app:
     build: .
 
@@ -23,11 +10,8 @@ services:
     ports:
       - "8080:8080"
 
-    depends_on:
-      - postgres
-
     environment:
-      SPRING_DATASOURCE_URL: jdbc:postgresql://postgres:5432/taskdb
-      DB_USERNAME: postgres
-      DB_PASSWORD: postgres
+      SPRING_DATASOURCE_URL: ${SPRING_DATASOURCE_URL}
+      DB_USERNAME: ${DB_USERNAME}
+      DB_PASSWORD: ${DB_PASSWORD}
       JWT_SECRET: ${JWT_SECRET}
